@@ -132,11 +132,11 @@ while True:
                 if i==nrowss-1:
                     call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
                     with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
-                        myfile.write(str(sheet.cell_value(i,0))+"="+str(call.sid())+"\n")
+                        myfile.write(str(sheet.cell_value(i,0))+"="+str(call.sid)+"\n")
                 else:    
                     call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
                     with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
-                        myfile.write(str(sheet.cell_value(i,0))+"="+str(call.sid())+"\n")
+                        myfile.write(str(sheet.cell_value(i,0))+"="+str(call.sid)+"\n")
                     time.sleep(90)
             #os.system("java -jar C:\\Users\\mukul\\Desktop\\runnable.jar")
             print("Letstry this")
