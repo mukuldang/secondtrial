@@ -11,18 +11,24 @@ import matplotlib.pyplot as plt
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 import pdfkit
+from twilio.rest import Client
+ACCOUNT="AC255041b230dc7f5003607fc7ae101972"
+SECRET="67ec8fc56082fdec1d8ca6f2480e4f44"
+client=Client(ACCOUNT,SECRET)
 COMMASPACE = ', '
 import sys
 from random import randint
-import urllib.request
+import xlrd
+import urllib
 from bs4 import BeautifulSoup
+import twilio
 import os
 import time
 import json
 from openpyxl import Workbook
 import csv
-host = 'ec2-52-15-225-210.us-east-2.compute.amazonaws.com'       # Symbolic name meaning all available interfaces
-port = 5000     # Arbitrary non-privileged port
+host = 'localhost'       # Symbolic name meaning all available interfaces
+port = 8080     # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))
 s.listen(1)
@@ -38,6 +44,7 @@ def emailing(send,passwo,topeople,subject):
     outer['Subject'] = subject
     outer['To'] = COMMASPACE.join(recipients)
     outer['From'] = sender
+    outer['Body']="HOWDY GUY?S"
     outer.preamble = 'You will not see this in a MIME-aware mail reader.\n'
 
     # List of attachments
@@ -70,10 +77,7 @@ def emailing(send,passwo,topeople,subject):
         print("Email sent!")
     except:
         print("Unable to send the email. Error: ", sys.exc_info()[0])
-        raise
-
-
-    
+        raise 
 while True:
     conn, addr = s.accept()
     print('Connected by', addr)
@@ -87,17 +91,14 @@ while True:
             
             wb = Workbook()
             ws = wb.active
-            
-          
             b=a[1].split(",")
-            
             for i in range(0,len(b)):
                 ws.append([str(b[i])])
-            wb.save("C:\\Users\\nchitaliya\\Desktop\\excel1.xlsx")
+            wb.save("C:\\Users\\mukul\\Desktop\\excel1.xlsx")
             conn.sendall(data)
         elif a[0]=="questions":
             b=a[2].split(",")
-            with open('convertcsv.csv', 'w',newline='') as csvfile:
+            with open('convertcsv.csv', 'w') as csvfile:
                 fieldnames = ['body', 'body','type']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
@@ -112,7 +113,7 @@ while True:
             print(lst)
             x={'questions':lst,'title':str(a[1])}
             print (json.dumps(x, indent=2))
-            with open('C:\\Users\\nchitaliya\\Desktop\\Twilio Project\\automated-survey-spring-master\\survey.json', 'w') as outfile:
+            with open('D:\\automated-survey-spring-master\\survey.json', 'w') as outfile:
                     json.dump(x, outfile)
             conn.sendall(data)
         elif a[0]=="password":
@@ -124,18 +125,18 @@ while True:
                 m="False"
                 conn.sendall(m.encode('utf8'))
         elif a[0]=="True":
-            try:
-                os.system("x.bat")
-            except:
-                print("Port is open")
-            p=subprocess.Popen(["python","script.py"])
-           
-            time.sleep(6)
-            pids=p.pid
-            os.system("java -jar runnable.jar")
+            book=xlrd.open_workbook("C:\\Users\\mukul\\Desktop\\excel1.xlsx")
+            sheet=book.sheet_by_index(0)
+            nrowss=sheet.nrows
+            for i in range(0,nrowss):
+                call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
+                with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
+                    myfile.write(str(sheet.cell_value(i,0))+"="+str(sheet.cell_value(i,0))+"\n")
+                time.sleep(90)
+            #os.system("java -jar C:\\Users\\mukul\\Desktop\\runnable.jar")
             print("Letstry this")
-            pdfkit.from_url('http://5c404705.ngrok.io/', 'Results.pdf')
-            response=urllib.request.urlopen('http://5c404705.ngrok.io/')
+            pdfkit.from_url('https://surveyjavatrial.herokuapp.com/', 'Results.pdf')
+            response=urllib.urlopen('https://surveyjavatrial.herokuapp.com/')
             res=response.read()
             soup=BeautifulSoup(res)
             lis=[]
@@ -161,7 +162,7 @@ while True:
             print(lis[4:])
             print("This is the ratings we got")
             print(ratings)
-            with open("C:\\Users\\nchitaliya\\Desktop\\callfile.txt","r") as f:
+            with open("C:\\Users\\mukul\\Desktop\\callfile.txt","r") as f:
                 for line in f:
                     b=line.split("=")
                     dic[str(b[1]).strip("\n")]=str(b[0])
@@ -183,20 +184,89 @@ while True:
             print(msg)
             print(msg1)
             conn.send(msg1.encode('utf8'))
-            w=open("C:\\Users\\nchitaliya\\Desktop\\callfile.txt","w")
-            w.close()
-            
-            try:
-                os.system("x.bat")
-            except:
-                print("Port is open")
-            
-            p.terminate()
-
-            
-            
-        
+            #w=open("C:\\Users\\mukul\\Desktop\\callfile.txt","w")
+            #w.close()        
             print("HELLLLOOOOOOOOOOOOOOOOOOOO")
+        elif a[0]=="call":
+            
+            for i in range(0,nrowss):
+                call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
+                with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
+                    myfile.write(str(sheet.cell_value(i,0))+"="+str(sheet.cell_value(i,0))+"\n")
+                time.sleep(90)
+            print("Letstry this")
+            pdfkit.from_url('https://surveyjavatrial.herokuapp.com/', 'Results.pdf')
+            response=urllib.urlopen('https://surveyjavatrial.herokuapp.com/')
+            res=response.read()
+            soup=BeautifulSoup(res)
+            lis=[]
+            lis1=[]
+            ratings=[]
+            count=1
+            for i in soup.find_all('li'):
+                lis.append(i.text)
+            for i in range(4,len(lis)):
+                if i%4==0:
+                    a=lis[i].split(": ")
+                    lis1.append(a[1])
+                if i-count==4:
+                    count=i
+                    a=lis[i].split(": ")
+                    u=a[1].rstrip("\n ")
+                    if int(u)>5:
+                        ratings.append(str(5))
+                    ratings.append(str(u))
+            dic={}
+            key=[]
+            print("This is the lis")
+            print(lis[4:])
+            print("This is the ratings we got")
+            print(ratings)
+            with open("C:\\Users\\mukul\\Desktop\\callfile.txt","r") as f:
+                for line in f:
+                    b=line.split("=")
+                    dic[str(b[1]).strip("\n")]=str(b[0])
+                    key.append(str(b[1]).strip("\n"))
+            count=0
+            msg=""
+            for i in range(0,len(key)):
+                if key[i] not in lis1:
+                    msg=msg+dic[key[i]]+","
+                    count=count+1
+            #if(msg==""):
+            #    msg="NONE"
+            #    conn.send(msg.encode('utf8'))
+            realrating=[ratings.count("1"),ratings.count("2"),ratings.count("3"),ratings.count("4"),ratings.count("5"),count]
+            msg1=""
+            for i in range(0,len(realrating)):
+                msg1=msg1+str(realrating[i])+","
+            print(msg)
+            print(msg1)
+            #w=open("C:\\Users\\mukul\\Desktop\\callfile.txt","w")
+            #w.close()        
+            print("HELLLLOOOOOOOOOOOOOOOOOOOO")
+            
+            objects = ('Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5 \nor more', 'No \nResponse')
+            y_pos = np.arange(len(objects))
+            rating=a[1].split(',')
+            rating.pop(len(rating)-1)
+            plt.bar(y_pos, rating, align='center', alpha=0.5)
+            plt.xticks(y_pos,objects)
+            print(rating)
+            plt.ylabel('Number of Responses')
+            plt.title('Results for your survey!')
+            plt.savefig('fig.png')
+            emailing("lorddarkseid08@gmail.com","Mukul123",["mukul94dang@gmail.com"],"Your Survey Results")
+       
+        elif a[0]=="git":
+            os.system("git init")
+            os.system("git add .")
+            os.system("git remote add origin https://github.com/mukuldang/javatrial.git")
+            os.system("git commit -m ""try"" ")
+            os.system("git push origin master")
+            msg="True"
+            conn.send(msg.encode('utf8'))
+            
         elif a[0]=="rating":
             objects = ('Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5 \nor more', 'No \nResponse')
             y_pos = np.arange(len(objects))
