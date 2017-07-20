@@ -68,7 +68,7 @@ public class TwiMLUtil {
     }
 
     public static String voiceResponseWithRedirect(String message, String questionUrl) throws TwiMLException {
-    	Play play = new Play.Builder("https://api.twilio.com/cowbell.mp3").build();
+    	Play play = new Play.Builder("trial.wav").build();
     	return new VoiceResponse.Builder()
         		//.say(new Say.Builder(message).voice(Voice.MAN).language(Language.EN).build())
                 .play(play)
