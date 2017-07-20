@@ -69,7 +69,7 @@ public class TwiMLUtil {
 
     public static String voiceResponseWithRedirect(String message, String questionUrl) throws TwiMLException {
         return new VoiceResponse.Builder()
-        		.play(new Play.Builder("trial.wav").build())
+        		.say(new Say.Builder(message).voice(Voice.MAN).language(Language.EN).build())
                 .redirect(new Redirect.Builder().url(questionUrl).method(Method.GET).build())
                 .build()
                 .toXml();
