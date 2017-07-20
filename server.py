@@ -38,7 +38,6 @@ def emailing(send,passwo,topeople,subject):
     sender = send
     gmail_password = passwo
     recipients = topeople
-        
     # Create the enclosing (outer) message
     outer = MIMEMultipart()
     outer['Subject'] = subject
@@ -133,6 +132,7 @@ while True:
                 with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
                     myfile.write(str(sheet.cell_value(i,0))+"="+str(call.sid)+"\n")
                 time.sleep(90)
+            os.system("copy callfile.txt callagain.txt")
             #os.system("java -jar C:\\Users\\mukul\\Desktop\\runnable.jar")
             print("Letstry this")
             pdfkit.from_url('https://surveyjavatrial.herokuapp.com/', 'Results.pdf')
@@ -191,7 +191,7 @@ while True:
             
             for i in range(0,nrowss):
                 call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
-                with open("C:\\Users\\mukul\\Desktop\\callfile.txt", "a") as myfile:
+                with open("C:\\Users\\mukul\\Desktop\\callagain.txt", "a") as myfile:
                     myfile.write(str(sheet.cell_value(i,0))+"="+str(sheet.cell_value(i,0))+"\n")
                 time.sleep(90)
             print("Letstry this")
@@ -222,7 +222,7 @@ while True:
             print(lis[4:])
             print("This is the ratings we got")
             print(ratings)
-            with open("C:\\Users\\mukul\\Desktop\\callfile.txt","r") as f:
+            with open("C:\\Users\\mukul\\Desktop\\callagain.txt","r") as f:
                 for line in f:
                     b=line.split("=")
                     dic[str(b[1]).strip("\n")]=str(b[0])
@@ -270,7 +270,8 @@ while True:
         elif a[0]=="rating":
             objects = ('Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5 \nor more', 'No \nResponse')
             y_pos = np.arange(len(objects))
-            rating=a[1].split(',')
+            x=a[1].decode('utf-8')
+            rating=x.split(',')
             rating.pop(len(rating)-1)
             plt.bar(y_pos, rating, align='center', alpha=0.5)
             plt.xticks(y_pos,objects)
