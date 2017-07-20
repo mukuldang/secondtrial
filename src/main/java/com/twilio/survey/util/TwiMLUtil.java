@@ -1,5 +1,7 @@
 package com.twilio.survey.util;
 
+import java.io.File;
+
 import com.twilio.survey.models.Question;
 import com.twilio.survey.models.Survey;
 import com.twilio.twiml.Body;
@@ -68,7 +70,8 @@ public class TwiMLUtil {
     }
 
     public static String voiceResponseWithRedirect(String message, String questionUrl) throws TwiMLException {
-    	Play play = new Play.Builder("song.mp3").build();
+    	File f=new File("song.mp3");
+    	Play play = new Play.Builder(f.getAbsolutePath()).build();
     	return new VoiceResponse.Builder()
         		//.say(new Say.Builder(message).voice(Voice.MAN).language(Language.EN).build())
                 .play(play)
