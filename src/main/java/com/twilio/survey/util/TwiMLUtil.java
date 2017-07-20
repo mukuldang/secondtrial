@@ -68,9 +68,10 @@ public class TwiMLUtil {
     }
 
     public static String voiceResponseWithRedirect(String message, String questionUrl) throws TwiMLException {
-        return new VoiceResponse.Builder()
+    	Play play = new Play.Builder("https://api.twilio.com/cowbell.mp3").build();
+    	return new VoiceResponse.Builder()
         		//.say(new Say.Builder(message).voice(Voice.MAN).language(Language.EN).build())
-                .play(new Play.Builder("http://demo.twilio.com/hellomonkey/monkey.mp3").build())
+                .play(play)
         		.redirect(new Redirect.Builder().url(questionUrl).method(Method.GET).build())
                 .build()
                 .toXml();
