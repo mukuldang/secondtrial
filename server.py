@@ -190,13 +190,13 @@ while True:
         elif a[0]=="call":
             
             for i in range(0,nrowss):
-                call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://surveyjavatrial.herokuapp.com/survey/call/")
+                call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://newjavatrial.herokuapp.com/survey/call/")
                 with open("C:\\Users\\mukul\\Desktop\\callagain.txt", "a") as myfile:
                     myfile.write(str(sheet.cell_value(i,0))+"="+str(sheet.cell_value(i,0))+"\n")
                 time.sleep(90)
             print("Letstry this")
-            pdfkit.from_url('https://surveyjavatrial.herokuapp.com/', 'Results.pdf')
-            response=urllib.urlopen('https://surveyjavatrial.herokuapp.com/')
+            pdfkit.from_url('https://newjavatrial.herokuapp.com/', 'Results.pdf')
+            response=urllib.urlopen('https://newjavatrial.herokuapp.com/')
             res=response.read()
             soup=BeautifulSoup(res)
             lis=[]
