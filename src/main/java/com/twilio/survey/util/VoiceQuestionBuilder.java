@@ -3,6 +3,10 @@ package com.twilio.survey.util;
 import com.twilio.survey.models.Question;
 import com.twilio.twiml.Hangup;
 import com.twilio.twiml.Pause;
+<<<<<<< HEAD
+=======
+import com.twilio.twiml.Play;
+>>>>>>> 7e31f3f26695c4624cf808eb56c354f3d89779bc
 import com.twilio.twiml.Say;
 import com.twilio.twiml.TwiMLException;
 import com.twilio.twiml.VoiceResponse;
@@ -61,6 +65,10 @@ public class VoiceQuestionBuilder implements QuestionBuilder {
         return new VoiceResponse.Builder()
                 .say(new Say.Builder(recordingInstructions).build())
                 .pause(new Pause.Builder().build())
+<<<<<<< HEAD
+=======
+                //.play(new Play.Builder(question.getBody()).build())
+>>>>>>> 7e31f3f26695c4624cf808eb56c354f3d89779bc
                 .say(new Say.Builder(question.getBody()).build())
                 .record(TwiMLUtil.record(question))
                 .build()
