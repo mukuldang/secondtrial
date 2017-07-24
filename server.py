@@ -262,8 +262,9 @@ while True:
             os.system("git init")
             os.system("git add .")
             os.system("git remote add origin https://github.com/mukuldang/javatrial.git")
-            os.system("git pull origin master")
+            
             os.system("git commit -m ""try"" ")
+            os.system("git pull origin master")
             os.system("git push origin master")
             msg="True"
             conn.send(msg.encode('utf8'))
