@@ -188,7 +188,8 @@ while True:
             #w.close()        
             print("HELLLLOOOOOOOOOOOOOOOOOOOO")
         elif a[0]=="call":
-            
+            f=open("C:\\Users\\mukul\\Desktop\\callfile.txt","w")
+            f.close()
             for i in range(0,nrowss):
                 call=client.api.account.calls.create(to=str(sheet.cell_value(i,0)),from_="+13214223232",url="https://newjavatrial.herokuapp.com/survey/call/")
                 with open("C:\\Users\\mukul\\Desktop\\callagain.txt", "a") as myfile:
@@ -257,7 +258,8 @@ while True:
             plt.title('Results for your survey!')
             plt.savefig('fig.png')
             emailing("lorddarkseid08@gmail.com","Mukul123",["mukul94dang@gmail.com"],"Your Survey Results")
-       
+            f=open("C:\\Users\\mukul\\Desktop\\callagain.txt","w")
+            f.close()
         elif a[0]=="git":
             os.system("git init")
             os.system("git add .")
