@@ -68,7 +68,6 @@ public class VoiceQuestionBuilder implements QuestionBuilder {
                 .build()
                 .toXml();
     }
-
     private String getGatherResponse(String defaultMessage) throws TwiMLException {
         return new VoiceResponse.Builder()
                 .say(new Say.Builder(defaultMessage).build())
