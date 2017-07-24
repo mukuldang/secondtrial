@@ -112,7 +112,7 @@ while True:
             print(lst)
             x={'questions':lst,'title':str(a[1])}
             print (json.dumps(x, indent=2))
-            with open('D:\\automated-survey-spring-master\\survey.json', 'w') as outfile:
+            with open('C:\\Users\\mukul\\Documents\\automated-survey-spring-master\\survey.json', 'w') as outfile:
                     json.dump(x, outfile)
             conn.sendall(data)
         elif a[0]=="password":
@@ -261,8 +261,10 @@ while True:
         elif a[0]=="git":
             os.system("git init")
             os.system("git add .")
-            os.system("git remote add origin https://github.com/mukuldang/javatrial.git")
+            os.system("git remote add origin https://github.com/mukuldang/secondtrial.git")
+            
             os.system("git commit -m ""try"" ")
+            #os.system("git pull origin master")
             os.system("git push origin master")
             msg="True"
             conn.send(msg.encode('utf8'))
